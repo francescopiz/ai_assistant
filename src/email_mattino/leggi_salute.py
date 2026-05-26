@@ -11,22 +11,17 @@ from googleapiclient.errors import HttpError
 
 SCOPES = ['https://www.googleapis.com/auth/drive.readonly']
 
-# --- DEFINIZIONE DEI PERCORSI ASSOLUTI ---
-# __file__ è il percorso di questo script (es: /tuo_progetto/src/script.py)
 BASE_DIR = Path(__file__).resolve().parent  # Cartella 'src'
 PROJECT_DIR = BASE_DIR.parent  # Cartella radice del progetto
 
-# I file di configurazione Google li teniamo nella radice del progetto
 CREDENTIALS_PATH = PROJECT_DIR / 'credentials.json'
 TOKEN_PATH = PROJECT_DIR / 'token.json'
 
-# La cartella 'data' viene posizionata nella radice del progetto
 DATA_DIR = PROJECT_DIR / 'data'
 
 
 def ottieni_credenziali():
     creds = None
-    # Verifica l'esistenza usando il percorso assoluto di token.json
     if TOKEN_PATH.exists():
         creds = Credentials.from_authorized_user_file(str(TOKEN_PATH), SCOPES)
 
@@ -42,7 +37,6 @@ def ottieni_credenziali():
             flow = InstalledAppFlow.from_client_secrets_file(str(CREDENTIALS_PATH), SCOPES)
             creds = flow.run_local_server(port=0)
 
-        # Salva il token nella radice del progetto
         with open(TOKEN_PATH, 'w') as token:
             token.write(creds.to_json())
     return creds
@@ -62,10 +56,8 @@ def salva_file_locale(service, file_id):
     """Scarica lo zip da Google Drive ed estrae il database nella cartella data/"""
     nome_output_db = "health_connect_export.db"
 
-    # Crea la cartella 'data' se non esiste (parents=True la crea se manca anche la radice, exist_ok evita errori se c'è già)
     DATA_DIR.mkdir(parents=True, exist_ok=True)
 
-    # Percorso finale del database (es: /tuo_progetto/data/health_connect_export.db)
     percorso_finale_db = DATA_DIR / nome_output_db
 
     print("⏳ Download del file zip in corso da Google Drive...")
@@ -85,7 +77,6 @@ def salva_file_locale(service, file_id):
             # Legge i byte del database dallo ZIP
             db_bytes = z.read("health_connect_export.db")
 
-            # Scrive il file dentro la cartella data/
             with open(percorso_finale_db, "wb") as f_out:
                 f_out.write(db_bytes)
 

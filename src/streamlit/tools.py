@@ -7,7 +7,6 @@ def cerca_su_internet(query: str) -> str:
     """
     try:
         with DDGS() as ddgs:
-            # Recuperiamo i risultati reali dal web
             risultati = list(ddgs.text(query, max_results=10))
             if not risultati:
                 return "Nessun risultato trovato su DuckDuckGo per questa ricerca."
