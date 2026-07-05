@@ -5,8 +5,8 @@ from email.message import EmailMessage
 from dotenv import load_dotenv
 
 from services.meteo_service import get_forecast_24h
-from email_mattino.notizie_scraper import estrai_notizie_grezze
-from email_mattino.report_generator import genera_report_html
+from src.email_mattino.notizie_scraper import estrai_notizie_grezze
+from src.email_mattino.report_generator import genera_report_html
 
 from services.salute_service import get_report_salute_ieri
 
